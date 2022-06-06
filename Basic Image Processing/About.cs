@@ -20,7 +20,7 @@ namespace Basic_Image_Processing
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://sextop1.lol/");
+            Process.Start("https://github.com/taducuet/Basic-Image-Processing");
         }
     }
 }
