@@ -1,0 +1,71 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using System.Drawing.Imaging;
+
+namespace Basic_Image_Processing
+{
+    public partial class Erosion : Form
+    {
+        public Erosion(Image image, string path)
+        {
+            InitializeComponent();
+            pBox_Erosion.Image = image;
+            pBox_Erosion.SizeMode = PictureBoxSizeMode.Zoom;
+            tBox_path.Text = path;
+        }
+
+        private void Erosion_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tBar_gaussBlur_Scroll(object sender, EventArgs e)
+        {
+            Mat src = new Mat(tBox_path.Text, ImreadModes.AnyColor);
+            Mat dst = new Mat();
+
+            OpenCvSharp.Point p = new OpenCvSharp.Point();
+            p.X = -1;
+            p.Y = -1;
+
+            lB_blur.Text = tBar_gaussBlur.Value.ToString();
+            Cv2.Erode(src, dst, new Mat(), p, tBar_gaussBlur.Value);
+
+            Bitmap bitmap = dst.ToBitmap();
+            pBox_Erosion.Image = bitmap;
+            Cv2.WaitKey(0);
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "JPEG (.jpeg)|*.jpeg|Bitmap (.bmp)|*.bmp|GIF (.gif)|*.gif|PNG (.png)|*.png|TIFF (.tiff)|*.tiff|WMF (.wmf)|*.wmf";
+            sfd.FileName = "Erosion";
+            if (DialogResult.OK == sfd.ShowDialog())
+            {
+                this.pBox_Erosion.Image.Save(sfd.FileName, ImageFormat.Jpeg);
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Do you want to exit ?", "Close Application", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                this.Close();
+            }
+            else
+            {
+                this.Activate();
+            }
+        }
+    }
+}
